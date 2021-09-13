@@ -1,22 +1,34 @@
 #include <bits/stdc++.h>
+
 #ifdef WIN32
+
 #include <windows.h>
 void color(int co){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),co);
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), co);
 }
-#define __Pause system("pause")
+
+#define __Pause system("pause > nul")
+
 #elif defined(linux)
+
 void color(int co){
-	std::string __command="echo -e \"\\e["+std::to_string(co+17)+"m\"";
-	//std::cout<<__command<<std::endl;
+	std::string __command = "echo -e \"\\e[" + std::to_string(co + 17) + "m\"";
 	system(__command.c_str());
 }
+
 #define __Pause cin.get()
+
 #else 
-#error OS not supported
+
+#error Your OS does not support OIrestart.
+
 #endif
 using namespace std;
 
+ofstream logcout("oirestart-log.txt");
+
+const int STAGE_CAP = 100;
+const int MAX_EVENT_CNT = 50000; 
 
 int iscsym_A(int c) {
   return (isalnum(c) || ( c == '_' ));
@@ -230,8 +242,8 @@ vector<string> tokenize(string text) {
             } else if(ret[i] == "<") {
                 if(ret[i - 1] == "<") final[final.size() - 1] += "<";
                 else final.push_back(ret[i]);
-            } else if(isdigit(ret[i][0])) {
-            	if(ret[i - 1] == "-" || ret[i - 1] == "+") final[final.size() - 1] += ret[i];
+            } else if(isdigit(ret[i][0]) || ret[i][0] == '*' || ret[i][0] == '+') {
+            	if(ret[i - 1] == "-" || ret[i - 1] == "+" || ret[i - 1] == "*") final[final.size() - 1] += ret[i];
                 else final.push_back(ret[i]);
 			}
 			else final.push_back(ret[i]);
@@ -240,7 +252,7 @@ vector<string> tokenize(string text) {
 	return final;
 }
 
-const int PROP_CNT = 8;
+const int PROP_CNT = 9;
 
 const int RP = 0; // RP
 const int DP = 1; // Dynamic Programming
@@ -250,9 +262,15 @@ const int SM = 4; // Simulation
 const int FS = 5; // Family Support
 const int SC = 6; // Self Confidence
 const int AG = 7; // Age
+const int LV = 8; // Level
 
 string val_name[PROP_CNT] = {
-	"RP", "DP", "DS", "GT", "SM", "FS", "SC", "AG"
+	"RP", "DP", "DS", "GT", "SM", "FS", "SC", "AG", "LV"
+};
+
+string full_name[PROP_CNT] = {
+	"Lucky", "Dynamic Programming", "Data Strucure", "Graph Theory", "Simulation",
+	"Family Support", "Self Confidence", "Age", "Current Score"
 };
 
 int val_id(string name) {
@@ -301,6 +319,13 @@ bool has_occured[50000];
 struct Player {
 	int ability[PROP_CNT];
 	string name;
+	
+	string to_string() {
+		stringstream ss("");
+		ss << "Player " << name << ": " << endl;
+		for(int i = 0; i < PROP_CNT; i++) ss << "    " << full_name[i] << ": " << ability[i] << endl;
+		return ss.str();
+	}
 };
 
 struct Condition {
@@ -345,7 +370,7 @@ struct Condition {
 				break;
 			}
 			default: {
-				cout << "Warning: unknown conditon. op = " << op << ", param = " << param << "." << endl;
+				logcout << "Warning: unknown conditon. op = " << op << ", param = " << param << "." << endl;
 				return true;
 				break;
 			}
@@ -369,6 +394,8 @@ Condition make_condition(char op, int param, int which) {
 	
 	return condition;
 }
+
+vector<vector<int> > stages;
 
 struct Rule {
 	vector<bool> need;
@@ -457,14 +484,15 @@ Rule make_rule() {
 
 void occur_event(int id);
 bool can_occur_event(int id, Player player);
+vector<int> public_area;
 vector<int> event_queue;
-const int PRIOR_ADD = 3;
+const int PRIOR_ADD = 1;
 
 struct Event {
 	int id;
 	string msg;
 	int change[PROP_CNT];
-	int next_event;
+	vector<int> next_event;
 	vector<int> prior;
 	Rule rule;
 	
@@ -475,9 +503,13 @@ struct Event {
 	void occur() {
 		has_occured[id] = true;
 		for(int i = 0; i < prior.size(); i++) {
-			for(int j = 1; j <= PRIOR_ADD; j++) event_queue.push_back(prior[i]);
+			for(int j = 1; j <= PRIOR_ADD; j++) {
+				int id = prior[i];
+				int stageid = id / STAGE_CAP;
+				stages[stageid].push_back(prior[i]);
+			}
 		}
-		if(next_event != NONE) occur_event(next_event);
+		for(int i = 0; i < next_event.size(); i++) occur_event(next_event[i]);
 	}
 	
 	string to_string() {
@@ -487,7 +519,13 @@ struct Event {
 		for(int i = 0; i < PROP_CNT; i++) {
 			ss << "    CHANGE-" << val_name[i] << " = " << change[i] << endl;
 		}
-		ss << "    NEXT-EVENT = " << next_event << endl;
+		ss << "    NEXT-EVENT = [";
+		if(next_event.size() == 0) ss << "]" << endl;
+		else {
+			ss << next_event[0];
+			for(int i = 1; i < next_event.size(); i++) ss << ", " << next_event[i];
+			ss << "]" << endl;
+		}
 		ss << "    PRIOR = [";
 		if(prior.size() == 0) ss << "]" << endl;
 		else {
@@ -500,17 +538,11 @@ struct Event {
 	}
 };
 
-Event events[50000];
+Event events[MAX_EVENT_CNT];
 vector<int> EMPTY;
 
-void occur_event(int id) {
-	cout << "Event #" << id << " " << events[id].msg << " occured." << endl;
-	events[id].occur();
-}
-
-bool can_occur_event(int id, Player player) {
-	return events[id].can_occur(player);
-}
+const int SPAWN_EVENT = 1001;
+const int OVER_EVENT = 49999;
 
 bool has_event(int id) {
 	for(int i = 0; i < event_queue.size(); i++) {
@@ -519,10 +551,46 @@ bool has_event(int id) {
 	return false;
 }
 
+void enter_stage(int newstage) {
+	event_queue = stages[newstage / STAGE_CAP];
+	for(int i = 0; i < public_area.size(); i++) event_queue.push_back(public_area[i]);
+}
+
+void occur_event(int id) {
+	if(id == -1 || !has_event(id)) {
+		logcout << "Can not found event " << id << "! Nothing will happen!" << endl;
+		return;
+	}
+	logcout << "Event #" << id << " " << events[id].msg << " occured." << endl;
+	
+	vector<string> tokens = tokenize(events[id].msg);
+	if(tokens.size() == 3 && tokens[0] == "Jump" && tokens[1] == "to") {
+		int newstage = atoi(tokens[2].c_str());
+		enter_stage(newstage);
+		cout << "Congratulations. Entered new stage.\n" << endl;
+		logcout << "Enter " << newstage / STAGE_CAP << "." << endl;
+	}
+	else {
+		cout << events[id].msg << endl;
+		cout << endl;
+	}
+	
+	events[id].occur();
+	if(id == OVER_EVENT) {
+		logcout << "Over event " << OVER_EVENT << " occured. Game over." << endl;
+		cout << "Game over." << endl;
+		exit(0);
+	}
+}
+
+bool can_occur_event(int id, Player player) {
+	return events[id].can_occur(player);
+}
+
 void regist_event(	int id, string msg, 
-					int rp, int dp, int ds, int gt, int sm, int fs, int sc, int ag,
+					int rp, int dp, int ds, int gt, int sm, int fs, int sc, int ag, int lv,
 					Rule rule,
-					int next = NONE,
+					vector<int> next = EMPTY,
 					vector<int> prior = EMPTY) {
 	
 	Event event;
@@ -530,14 +598,15 @@ void regist_event(	int id, string msg,
 	event.msg = msg;
 	event.change[RP] = rp, event.change[DP] = dp, event.change[DS] = ds;
 	event.change[GT] = gt, event.change[SM] = sm, event.change[FS] = fs;
-	event.change[SC] = sc, event.change[AG] = ag;
+	event.change[SC] = sc, event.change[AG] = ag, event.change[LV] = lv;
 	event.rule = rule;
 	event.next_event = next, event.prior = prior;
 	events[id] = event;
 	if(!has_event(id)) event_queue.push_back(id);
 	else {
-		cout << "Warning: duplicated event id: " << id << "!" << endl;
+		logcout << "Warning: duplicated event id: " << id << "!" << endl;
 	}
+	stages[id / STAGE_CAP].push_back(id);
 }
 
 Player make_player(string name,
@@ -546,13 +615,18 @@ Player make_player(string name,
 	Player player;
 	player.ability[RP] = rp, player.ability[DP] = dp, player.ability[DS] = ds;
 	player.ability[GT] = gt, player.ability[SM] = sm, player.ability[FS] = fs;
-	player.ability[SC] = sc, player.ability[AG] = ag, player.name = name;
+	player.ability[SC] = sc, player.ability[AG] = ag, player.ability[LV] = 0;
+	player.name = name;
 	return player;
 }
 
 Rule spawn_condition(string str) {
 	vector<string> tokens = tokenize(str);
-	Rule ret;
+	Rule ret = make_rule();
+	if(str == "") {
+		logcout << "Empty rule! Will return a empty rule." << endl;
+		return ret;
+	}
 	if(tokens.size() == 3) {
 		string oprand1 = tokens[0];
 		string oper = tokens[1];
@@ -578,12 +652,14 @@ Rule spawn_condition(string str) {
 				ret.conditions.push_back(left.conditions[i]);
 				ret.need.push_back(true);
 			}
-			for(int i = 0; i < right.conditions.size(); i++) {
-				if(i >= ret.conditions.size()) {
-					ret.conditions.push_back(vector<Condition>());
-					ret.need.push_back(true);
+			for(int k = 0; k < ret.conditions.size(); k++) {
+				for(int i = 0; i < right.conditions.size(); i++) {
+					if(i >= ret.conditions.size()) {
+						ret.conditions.push_back(vector<Condition>());
+						ret.need.push_back(true);
+					}
+					for(int j = 0; j < right.conditions[i].size(); j++) ret.conditions[k].push_back(right.conditions[i][j]);
 				}
-				for(int j = 0; j < right.conditions[i].size(); j++) ret.conditions[i].push_back(right.conditions[i][j]);
 			}
 			return ret;
 		}
@@ -592,7 +668,7 @@ Rule spawn_condition(string str) {
 			int val = atoi(oprand2.c_str());
 			char op = get_op(oper);
 			if(which == -1 || op == '?') {
-				cout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
+				logcout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
 				return make_rule(); 
 			}
 			Condition condition = make_condition(op, val, which);
@@ -617,7 +693,7 @@ Rule spawn_condition(string str) {
 			int val = atoi(oprand.c_str());
 			char op = get_op(oper);
 			if(op == '?') {
-				cout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
+				logcout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
 				return make_rule(); 
 			}
 			Condition condition = make_condition(op, val, 0);
@@ -627,35 +703,43 @@ Rule spawn_condition(string str) {
 			return ret;
 		}
 	}
-	else {
+	else if(tokens.size() == 1) {
 		if(str.length() && str[0] == '(') {
 			str = str.length() >= 2 ? str.substr(1, str.length() - 2) : str;
 			return spawn_condition(str);
 		}
 		else {
-			cout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
+			logcout << "Invalid condition string: " << str << "! Will return an empty rule." << endl;
 			return ret; 
 		}
+	}
+	else {
+		string last_expr = tokens[tokens.size() - 1];
+		string op = tokens[tokens.size() - 2];
+		string front = "";
+		for(int i = 0; i < tokens.size() - 2; i++) front += tokens[i];
+		return spawn_condition("(" + front + ")" + op + last_expr);
 	}
 	return ret;
 }
 
 vector<int> make_change_arr(string str) {
 	str = str.length() >= 2 ? str.substr(1, str.length() - 2) : str;
-	vector<string> args = split(str, ',');
 	vector<int> vi;
 	vi.resize(PROP_CNT);
+	if(str == "") return vi;
+	vector<string> args = split(str, ',');
 	for(int i = 0; i < args.size(); i++) {
 		vector<string> tokens = tokenize(args[i]);
 		if(tokens.size() != 2) {
-			cout << "Invalid change string: " << str << "! Will return an empty list." << endl;
+			logcout << "Invalid change string: " << str << "! Will return an empty list." << endl;
 			return EMPTY;
 		}
 		string name = tokens[0];
 		string val = tokens[1];
 		int id = val_id(name);
 		if(id == -1) {
-			cout << "Invalid change string: " << str << "! Will return an empty list." << endl;
+			logcout << "Invalid change string: " << str << "! Will return an empty list." << endl;
 			return EMPTY;
 		}
 		vi[id] = atoi(val.c_str());
@@ -664,38 +748,63 @@ vector<int> make_change_arr(string str) {
 }
 
 vector<int> make_arr(string str) {
-	str = str.length() >= 2 ? str.substr(1, str.length() - 2) : str;
+	if(str[0] == '[' || str[0] == '(') str = str.length() >= 2 ? str.substr(1, str.length() - 2) : str;
+	if(str == "") {
+		return EMPTY;
+	}
 	vector<string> args = split(str, ',');
+	
 	vector<int> vi;
 	for(int i = 0; i < args.size(); i++) vi.push_back(atoi(args[i].c_str()));
 	return vi;
 }
 
 void regist_event(string str) {
-	int firn = str.length()-1;
-	for(register int i=0;i<str.length();i++){
-		if(str[i]=='#') { firn = i; break; }
-	}
-	if(firn==0)return;
-	vector<string> tokens = tokenize(str.substr(0,firn));
-	if(tokens.size() < 5) {
-		regist_event(0, "Default Event", 0, 0, 0, 0, 0, 0, 0, 0, spawn_condition(""));
-		cout << "Invalid event string: " << str << "! Will regist a default event with id 0." << endl;
+	vector<string> tokens = tokenize(str);
+	if(tokens.size() < 6) {
+		regist_event(0, "Default Event", 0, 0, 0, 0, 0, 0, 0, 0, 0, spawn_condition(""));
+		logcout << "Invalid event string: " << str << "! Will regist a default event with id 0." << endl;
 	}
 	else {
 		string xstr = "";
 		vector<int> params = make_change_arr(tokens[2]);
 		for(int i = 5; i < tokens.size(); i++) xstr += tokens[i] + " ";
 		
+		bool once = true;
+		bool public_event = false;
+		if(tokens[0][0] == '*' && tokens[0][1] == '+') {
+			once = false, public_event = true;
+			tokens[0] = tokens[0].substr(2, tokens[0].length() - 2);
+		}
+		else if(tokens[0][1] == '*' && tokens[0][0] == '+') {
+			once = false, public_event = true;
+			tokens[0] = tokens[0].substr(2, tokens[0].length() - 2);	
+		}
+		else {
+			if(tokens[0][0] == '+') {
+				once = false;
+				tokens[0] = tokens[0].substr(1, tokens[0].length() - 1);
+			}
+			else if(tokens[0][0] == '*') {
+				public_event = true;
+				tokens[0] = tokens[0].substr(1, tokens[0].length() - 1);
+			}
+		}
+		int id = atoi(tokens[0].c_str());
+		if(public_event) public_area.push_back(id);
+		if(once) {
+			if(tokens[1] != "()") tokens[1] += "&&(@" + tokens[0] + ")";
+			else tokens[1] = "(@" + tokens[0] + ")";
+		}	
+		
 		regist_event(
-		atoi(tokens[0].c_str()), xstr, params[RP], params[DP], params[DS],
-		params[GT], params[SM], params[FS], params[SC], params[AG], spawn_condition(tokens[1].c_str()), 
-		atoi(tokens[3].c_str()), make_arr(tokens[4])
+		id, xstr, params[RP], params[DP], params[DS],
+		params[GT], params[SM], params[FS], params[SC], params[AG], params[LV], spawn_condition(tokens[1]), 
+		make_arr(tokens[3]), make_arr(tokens[4])
 		);
-		cout << "Registed Event: " << events[atoi(tokens[0].c_str())].to_string() << endl;
+		logcout << "Registed Event: " << events[atoi(tokens[0].c_str())].to_string() << endl;
 	}
 }
-
 void next_event(Player & player) {
 	int id;
 	do {
@@ -705,35 +814,61 @@ void next_event(Player & player) {
 	for(int i = 0; i < PROP_CNT; i++) {
 		player.ability[i] += events[id].change[i];
 	}
+	cout << player.to_string() << endl;
+}
+
+void init() {
+	stages.resize(MAX_EVENT_CNT / STAGE_CAP);
 }
 
 int main() {
+	init();
 	string cmd;
 	
-	color(14);
+//	color(14);
 	
-	cout << "Initializing player...";
+	cout << "Initializing..." << endl;
+//	system("CHCP 65001");
+	
+	logcout << "Initializing player...";
 	
 	Player player = make_player("Test");
-	cout << "Done." << endl;
-	cout << "Opening events file...";
+	logcout << "Done." << endl;
+	logcout << "Opening events file...";
 	ifstream fcin("events.txt");
 	if(!fcin) {
-		cout << "Can not found events.txt." << endl;
-		cout << "Program will exit." << endl;
+		logcout << "Can not found events.txt." << endl;
+		logcout << "Program will exit." << endl;
 		exit(1);
 	}
 	
+	logcout << "Done." << endl;
+	logcout << "Reading events configurations..." << endl; 
+	
+	while(getline(fcin, cmd)) {
+		cmd = trim(cmd);
+		if(cmd == "") continue;
+		regist_event(cmd);
+	}
+	
+	logcout << "All events registered. Events count: " << event_queue.size() << "." << endl;
+	
+	for(int i = 0; i < MAX_EVENT_CNT / STAGE_CAP; i++) {
+		if(stages[i].size()) {
+			logcout << "Stage " << i << ": " << endl; 
+			for(int j = 0; j < stages[i].size(); j++) logcout << "Event #" << stages[i][j] << endl;
+			logcout << endl;
+		}
+	}
+	
 	cout << "Done." << endl;
-	cout << "Reading events configurations..." << endl; 
-	
-	while(getline(fcin, cmd)) regist_event(cmd);
-	
-	cout << "All events registered. Events count: " << event_queue.size() << "." << endl;
-	
 	cout << "Press any key to start" << endl;
 	
 	__Pause;
+	
+	enter_stage(SPAWN_EVENT);
+	logcout << "Current Stage " << SPAWN_EVENT / STAGE_CAP << ": " << endl;
+	for(int i = 0; i < event_queue.size(); i++) logcout << "Event queue " << event_queue[i] << endl;
 	
 	while(true) {
 		next_event(player);
