@@ -1,5 +1,20 @@
 #include <bits/stdc++.h>
+#ifdef WIN32
 #include <windows.h>
+void color(int co){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),co);
+}
+#define __Pause system("pause")
+#elif defined(linux)
+void color(int co){
+	std::string __command="echo -e \"\\e["+std::to_string(co+17)+"m\"";
+	//std::cout<<__command<<std::endl;
+	system(__command.c_str());
+}
+#define __Pause cin.get()
+#else 
+#error OS not supported
+#endif
 using namespace std;
 
 
@@ -657,7 +672,12 @@ vector<int> make_arr(string str) {
 }
 
 void regist_event(string str) {
-	vector<string> tokens = tokenize(str);
+	int firn = str.length()-1;
+	for(register int i=0;i<str.length();i++){
+		if(str[i]=='#') { firn = i; break; }
+	}
+	if(firn==0)return;
+	vector<string> tokens = tokenize(str.substr(0,firn));
 	if(tokens.size() < 5) {
 		regist_event(0, "Default Event", 0, 0, 0, 0, 0, 0, 0, 0, spawn_condition(""));
 		cout << "Invalid event string: " << str << "! Will regist a default event with id 0." << endl;
@@ -687,10 +707,6 @@ void next_event(Player & player) {
 	}
 }
 
-void color(int co){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),co);
-}
-
 int main() {
 	string cmd;
 	
@@ -717,11 +733,11 @@ int main() {
 	
 	cout << "Press any key to start" << endl;
 	
-	system("pause");
+	__Pause;
 	
 	while(true) {
 		next_event(player);
-		system("pause");
+		__Pause;
 	}
 	cout << "Game Over." << endl;
 	
