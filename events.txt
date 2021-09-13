@@ -1,0 +1,38 @@
+*+1 () () [] [] Hello, world, 1!
+*+2 () () [] [] Hello, world, 2!
+*+3 () () [] [] Hello, world, 3!
+
+1001 () (AG + 3) [] [] You spawned.
+1012 (((AG == 10) || (DP == 10)) && (SC == 12)) () [] [] Test
+1002 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] You parents loved playing games.
+1003 ((@1002) && (AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1008,1009] Your father was a programmer.
+1004 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] Your parents were open-minded.
+1005 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] Your good education gaves you great logical ability.
+1006 ((AG >= 1) && (AG <= 6) && (@1007)) (RP + 1, AG + 1, FS + 1) [] [1011] You were always lucky.
+1007 ((AG >= 1) && (AG <= 6) && (@1006)) (RP - 1, AG + 1) [] [1012] You were always unlucky.
+1008 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] You could always understand the problem you were facing.
+1009 ((AG >= 6)) (SC + 1) [] [2003, 2004] You became interested in computer science.
+1010 (AG >= 6) (SC + 1) [] [] You were a student. 
+1011 ((AG >= 6) && (#1010)) (AG + 1) [] [] Jump to 2000
+
++2001 () (SC + 1, LV + 100) [] [2003] You got a great math grade.
++2002 () (SC - 1, LV - 100) [] [] You failed a math examination.
+2003 () (SC + 1) [] [] Your teacher invited you to join the school computer team.
+2004 (#2003) (AG + 1, SC + 1, DP + 1, DS + 1, SM + 1, GT + 1) [] [2006, 2007, 2008] You studied hard in the school team.
+2005 (#2003) () [] [] You didn't study hard in the school team.
+2006 ((#2003) && (@2007) && (@2008) && (@2009) && (@2010) && (@2011)) (SC + 5, FS + 2) [] [] During contest, you got an Au
+2007 ((#2003) && (@2006) && (@2008) && (@2009) && (@2010) && (@2011)) (SC + 3, FS + 1) [] [] During contest, you got an Ag
+2008 ((#2003) && (@2006) && (@2007) && (@2009) && (@2010) && (@2011)) (SC + 1) [] [] During contest, you got an Cu
+2009 ((#2003) && (@2006) && (@2007) && (@2008) && (@2010) && (@2011)) (SC - 2) [] [] During contest, you failed it because of lots of WAs
+2010 ((#2003) && (@2006) && (@2007) && (@2008) && (@2009) && (@2011)) (SC - 2) [] [] During contest, you failed it because of lots of TLEs
+2011 ((#2003) && (@2006) && (@2007) && (@2008) && (@2009) && (@2010)) (SC - 1) [] [] During contest, you failed it because of MLEs, but you didn't feel up
+2013 ((#2003) && (#2006) || (#2007) || (#2008) || (#2009) || (#2010) || (#2011)) (AG + 1) [] [] Jump to 2100
+
+2100 () () [] [] You participated in the CSP-3000 contest.
+2101 ((#2100) && (@2102) && (@2103) && (@2104) && (@2105) && (@2106)) (SC + 5, FS + 2) [] [] During contest CSP, you got an Au
+2102 ((#2100) && (@2101) && (@2103) && (@2104) && (@2105) && (@2106)) (SC + 3, FS + 1) [] [] During contest CSP, you got an Ag
+2103 ((#2100) && (@2101) && (@2102) && (@2104) && (@2105) && (@2106)) (SC + 1) [] [] During contest CSP, you got an Cu
+2104 ((#2100) && (@2101) && (@2102) && (@2103) && (@2105) && (@2106)) (SC - 2) [] [] During contest CSP, you failed it because of lots of WAs
+2105 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2106)) (SC - 2) [] [] During contest CSP, you failed it because of lots of TLEs
+2106 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2105)) (SC - 1) [] [] During contest CSP, you failed it because of MLEs, but you didn't feel upset.
+2108 ((#2101) || (#2102) || (#2103) || (#2104) || (#2105) || (#2106)) (AG + 1) [] [] Jump to 2200
