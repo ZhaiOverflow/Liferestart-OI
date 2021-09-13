@@ -1,5 +1,18 @@
 #include <bits/stdc++.h>
+#ifdef WIN32
 #include <windows.h>
+void color(int co){
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),co);
+}
+#elif defined(linux)
+void color(int co){
+	std::string __command="echo -e \"\\e["+std::to_string(co+17)+"m\"";
+	//std::cout<<__command<<std::endl;
+	system(__command.c_str());
+}
+#else 
+#error OS not supported
+#endif
 using namespace std;
 
 
@@ -685,10 +698,6 @@ void next_event(Player & player) {
 	for(int i = 0; i < PROP_CNT; i++) {
 		player.ability[i] += events[id].change[i];
 	}
-}
-
-void color(int co){
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE),co);
 }
 
 int main() {
