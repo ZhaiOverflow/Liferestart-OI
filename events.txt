@@ -1,19 +1,25 @@
-*+1 () () [] [] Hello, world, 1!
-*+2 () () [] [] Hello, world, 2!
-*+3 () () [] [] Hello, world, 3!
+*1 (AG >= 6) (SC + 1, DP + 1, DS + 1, SM + 1, GT + 1) [] [] You joined a training camp in your city, you felt you have learned something.
+*2 (AG >= 14) (SC + 3, DP + 3, DS + 3, SM + 3, GT + 3) [] [] Luckily, you joined a training camp in your province, you felt you have learned more.
+*3 (AG >= 6) (SC + 3, DP + 3, DS + 3, SM + 3, GT + 3) [] [] Luckily, you joined a training camp on Luogu, you felt you have learned more.
+*4 (AG >= 16) (SC + 3, DP + 10, DS + 10, SM + 10, GT + 10) [] [] Unbelievable, You joined the Winter Camp, you felt you have learned lots of knowledge!
+*5 (@6) (DP - 1, DS - 1, SM - 1, GT - 1) [] [] You started playing games.
+*6 (@7) (DP - 3, DS - 3, SM - 3, GT - 3) [] [] You started playing lots of games.
 
 1001 () (AG + 3) [] [] You spawned.
-1012 (((AG == 10) || (DP == 10)) && (SC == 12)) () [] [] Test
 1002 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] You parents loved playing games.
 1003 ((@1002) && (AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1008,1009] Your father was a programmer.
 1004 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] Your parents were open-minded.
-1005 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] Your good education gaves you great logical ability.
+1005 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] Your good education gave you great logical ability.
 1006 ((AG >= 1) && (AG <= 6) && (@1007)) (RP + 1, AG + 1, FS + 1) [] [1011] You were always lucky.
 1007 ((AG >= 1) && (AG <= 6) && (@1006)) (RP - 1, AG + 1) [] [1012] You were always unlucky.
-1008 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] You could always understand the problem you were facing.
+1008 ((AG >= 1) && (AG <= 6)) (AG + 1, FS + 1) [] [1009, 1010] You liked solving problems.
 1009 ((AG >= 6)) (SC + 1) [] [2003, 2004] You became interested in computer science.
 1010 (AG >= 6) (SC + 1) [] [] You were a student. 
 1011 ((AG >= 6) && (#1010)) (AG + 1) [] [] Jump to 2000
+1012 ((AG >= 1) && (AG <= 6)) (DS + 1, AG + 1) [] [1009, 1010] You were creative.
+1013 ((AG >= 1) && (AG <= 6)) (AG + 1, DS + 1, DP + 1, SM + 1, GT + 1) [] [1009, 1010] You were more telented than others.
+1014 ((AG >= 1) && (AG <= 6)) (AG + 1, SC + 1) [] [1009, 1010] You liked playing toys.
+1014 ((AG >= 1) && (AG <= 6)) (AG + 1, SC + 1) [] [1009, 1010] You often
 
 +2001 () (SC + 1, LV + 100) [] [2003] You got a great math grade.
 +2002 () (SC - 1, LV - 100) [] [] You failed a math examination.
@@ -28,11 +34,26 @@
 2011 ((#2003) && (@2006) && (@2007) && (@2008) && (@2009) && (@2010)) (SC - 1) [] [] During contest, you failed it because of MLEs, but you didn't feel up
 2013 ((#2003) && (#2006) || (#2007) || (#2008) || (#2009) || (#2010) || (#2011)) (AG + 1) [] [] Jump to 2100
 
-2100 () () [] [] You participated in the CSP-3000 contest.
-2101 ((#2100) && (@2102) && (@2103) && (@2104) && (@2105) && (@2106)) (SC + 5, FS + 2) [] [] During contest CSP, you got an Au
-2102 ((#2100) && (@2101) && (@2103) && (@2104) && (@2105) && (@2106)) (SC + 3, FS + 1) [] [] During contest CSP, you got an Ag
-2103 ((#2100) && (@2101) && (@2102) && (@2104) && (@2105) && (@2106)) (SC + 1) [] [] During contest CSP, you got an Cu
-2104 ((#2100) && (@2101) && (@2102) && (@2103) && (@2105) && (@2106)) (SC - 2) [] [] During contest CSP, you failed it because of lots of WAs
-2105 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2106)) (SC - 2) [] [] During contest CSP, you failed it because of lots of TLEs
-2106 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2105)) (SC - 1) [] [] During contest CSP, you failed it because of MLEs, but you didn't feel upset.
-2108 ((#2101) || (#2102) || (#2103) || (#2104) || (#2105) || (#2106)) (AG + 1) [] [] Jump to 2200
+2100 () () [] [] You participated in the City Programming contest.
+2101 ((#2100) && (@2102) && (@2103) && (@2104) && (@2105) && (@2106) && ((DP >= 5) && (DS >= 5) && (SM >= 5) && (GT >= 5))) (SC + 5, FS + 2) [] [] During contest CSP, you got an Au
+2102 ((#2100) && (@2101) && (@2103) && (@2104) && (@2105) && (@2106) && ((DP >= 4) && (DS >= 4) && (SM >= 4) && (GT >= 4))) (SC + 3, FS + 1) [] [] During contest CSP, you got an Ag
+2103 ((#2100) && (@2101) && (@2102) && (@2104) && (@2105) && (@2106) && ((DP >= 2) && (DS >= 2) && (SM >= 2) && (GT >= 2))) (SC + 1) [] [] During contest CSP, you got an Cu
+2104 ((#2100) && (@2101) && (@2102) && (@2103) && (@2105) && (@2106) && ((DP <= 3) || (DS <= 3) || (SM <= 3) || (GT <= 3))) (SC - 2) [] [] During contest CSP, you failed it because of lots of WAs
+2105 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2106) && ((DP <= 2) || (DS <= 2) || (SM <= 2) || (GT <= 2))) (SC - 2) [] [] During contest CSP, you failed it because of lots of TLEs
+2106 ((#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2105) && ((DP <= 2) || (DS <= 2) || (SM <= 2) || (GT <= 2))) (SC - 1) [] [] During contest CSP, you failed it because of MLEs, but you didn't feel upset.
+2108 ((#2101) || (#2102) || (#2103) || (#2104) || (#2105) || (#2106)) (AG + 1) [] [] You finished the CSP-3000 contest.
+2110 (SC >= 4) (AG + 1, SC + 1, DP + 2, DS + 2, SM + 2, GT + 2) [] [2100, 2101, 2102, 2103, 2103, 2102, 2103] You became more interested in programming and you studied harder than others.
+2111 ((SC >= 2) && (SC < 4)) (AG + 1, SC + 1, DP + 1, DS + 1, SM + 1, GT + 1) [] [2100, 2101, 2102, 2103, 2103] You kept being interested in programming and you studied as hard as others did.
+2112 (SC < 2) (AG + 1) [] [2113] You lost the interest of programming and you wanted to quit.
+2113 (#2112) () [2114] [] You quited the programming team.
+2114 (#2113) () [] [] Jump to 2200
+2115 (#2108 && ((#2101) || (#2100))) () [] [] Teachers noticed you, they concentrated to improve you.
+211
+2200 () () [] [] Nothing happened.
+
+19122 ((DP >= 25) && (DS >= 25) && (SM >= 25) && (GT >= 25)) (SC + 1) [] [] You were selected into Winter Camp.
+19123 (#19122) () [] [19124] You met Rin.
+19124 (#19123) () [] [] You toued Rin. 
+
+
+

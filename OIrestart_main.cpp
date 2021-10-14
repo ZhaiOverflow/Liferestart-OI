@@ -23,7 +23,16 @@ void color(int co){
 #error Your OS does not support OIrestart.
 
 #endif
+
 using namespace std;
+
+stringstream stream("");
+
+#ifdef JSDLL
+
+#define cout stream
+
+#endif
 
 ofstream logcout("oirestart-log.txt");
 
@@ -33,6 +42,12 @@ const int MAX_EVENT_CNT = 50000;
 int iscsym_A(int c) {
   return (isalnum(c) || ( c == '_' ));
 
+}
+
+string to_str(int x) {
+	stringstream ss("");
+	ss << x;
+	return ss.str();
 }
 
 string trim(string s) {
@@ -759,7 +774,15 @@ vector<int> make_arr(string str) {
 	return vi;
 }
 
+#ifdef JSDLL
+
+void regist_eventx(string str) {
+	
+#else
+
 void regist_event(string str) {
+	
+#endif
 	vector<string> tokens = tokenize(str);
 	if(tokens.size() < 6) {
 		regist_event(0, "Default Event", 0, 0, 0, 0, 0, 0, 0, 0, 0, spawn_condition(""));
@@ -795,7 +818,8 @@ void regist_event(string str) {
 		if(once) {
 			if(tokens[1] != "()") tokens[1] += "&&(@" + tokens[0] + ")";
 			else tokens[1] = "(@" + tokens[0] + ")";
-		}	
+		}
+		if(id != SPAWN_EVENT) tokens[1] += "&&(#" + to_str(SPAWN_EVENT) + (string)")";
 		
 		regist_event(
 		id, xstr, params[RP], params[DP], params[DS],
@@ -805,25 +829,36 @@ void regist_event(string str) {
 		logcout << "Registed Event: " << events[atoi(tokens[0].c_str())].to_string() << endl;
 	}
 }
-void next_event(Player & player) {
+string next_event(Player & player) {
+	string ret = "";
 	int id;
 	do {
 		id = event_queue[rand() % event_queue.size()];
 	} while(!can_occur_event(id, player));
+	cout << "Age " << player.ability[AG] << ": ";
 	occur_event(id);
 	for(int i = 0; i < PROP_CNT; i++) {
 		player.ability[i] += events[id].change[i];
 	}
-	cout << player.to_string() << endl;
+//	cout << player.to_string() << endl;
+	ret = stream.str();
+	stream.str("");
+	return ret;
 }
 
 void init() {
 	stages.resize(MAX_EVENT_CNT / STAGE_CAP);
+	string name;
+	unsigned long long hash = 0;
+	for(int i = 0; i < name.length(); i++) hash *= 131, hash += name[i];
 }
+
+#ifndef JSDLL
 
 int main() {
 	init();
 	string cmd;
+	srand(time(NULL));
 	
 //	color(14);
 	
@@ -878,3 +913,5 @@ int main() {
 	
 	return 0;
 }
+
+#endif
