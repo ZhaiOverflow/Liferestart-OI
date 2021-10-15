@@ -17,7 +17,7 @@
 1010 (AG >= 6) (SC + 1) [] [] You were a student. 
 1011 ((AG >= 6) && (#1010)) (AG + 1) [] [] Jump to 2000
 1012 ((AG >= 1) && (AG <= 6)) (DS + 1, AG + 1) [] [1009, 1010] You were creative.
-1013 ((AG >= 1) && (AG <= 6)) (AG + 1, DS + 1, DP + 1, SM + 1, GT + 1) [] [1009, 1010] You were more telented than others.
+1013 ((AG >= 1) && (AG <= 6)) (AG + 1, DS + 1, DP + 1, SM + 1, GT + 1) [] [1009, 1010] You were more talented than others.
 1014 ((AG >= 1) && (AG <= 6)) (AG + 1, SC + 1) [] [1009, 1010] You liked playing toys.
 1014 ((AG >= 1) && (AG <= 6)) (AG + 1, SC + 1) [] [1009, 1010] You often
 
@@ -48,7 +48,7 @@
 2113 (#2112) () [2114] [] You quited the programming team.
 2114 (#2113) () [] [] Jump to 2200
 2115 (#2108 && ((#2101) || (#2100))) () [] [] Teachers noticed you, they concentrated to improve you.
-211
+# 211
 2200 () () [] [] Nothing happened.
 
 19122 ((DP >= 25) && (DS >= 25) && (SM >= 25) && (GT >= 25)) (SC + 1) [] [] You were selected into Winter Camp.
