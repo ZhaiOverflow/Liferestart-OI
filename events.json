@@ -1,0 +1,665 @@
+[
+  {
+    "id": 1,
+    "type": "global",
+    "condition": "AG >= 6",
+    "result": [
+      "SC + 1",
+      "DP + 1",
+      "DS + 1",
+      "SM + 1",
+      "GT + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You joined a training camp in your city, you felt you have learned something."
+  },
+  {
+    "id": 2,
+    "type": "global",
+    "condition": "AG >= 14",
+    "result": [
+      "SC + 3",
+      "DP + 3",
+      "DS + 3",
+      "SM + 3",
+      "GT + 3"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Luckily, you joined a training camp in your province, you felt you have learned more."
+  },
+  {
+    "id": 3,
+    "type": "global",
+    "condition": "AG >= 6",
+    "result": [
+      "SC + 3",
+      "DP + 3",
+      "DS + 3",
+      "SM + 3",
+      "GT + 3"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Luckily, you joined a training camp on Luogu, you felt you have learned more."
+  },
+  {
+    "id": 4,
+    "type": "global",
+    "condition": "AG >= 16",
+    "result": [
+      "SC + 3",
+      "DP + 10",
+      "DS + 10",
+      "SM + 10",
+      "GT + 10"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Unbelievable, You joined the Winter Camp, you felt you have learned lots of knowledge!"
+  },
+  {
+    "id": 5,
+    "type": "global",
+    "condition": "@6",
+    "result": [
+      "DP - 1",
+      "DS - 1",
+      "SM - 1",
+      "GT - 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You started playing games."
+  },
+  {
+    "id": 6,
+    "type": "global",
+    "condition": "@7",
+    "result": [
+      "DP - 3",
+      "DS - 3",
+      "SM - 3",
+      "GT - 3"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You started playing lots of games."
+  },
+  {
+    "id": 1001,
+    "type": "normal",
+    "condition": "",
+    "result": [
+      "AG + 3"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You spawned."
+  },
+  {
+    "id": 1002,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You parents loved playing games."
+  },
+  {
+    "id": 1003,
+    "type": "normal",
+    "condition": "(@1002) && (AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1008,
+      1009
+    ],
+    "msg": "Your father was a programmer."
+  },
+  {
+    "id": 1004,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "Your parents were open-minded."
+  },
+  {
+    "id": 1005,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "Your good education gave you great logical ability."
+  },
+  {
+    "id": 1006,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6) && (@1007)",
+    "result": [
+      "RP + 1",
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1011
+    ],
+    "msg": "You were always lucky."
+  },
+  {
+    "id": 1007,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6) && (@1006)",
+    "result": [
+      "RP - 1",
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1012
+    ],
+    "msg": "You were always unlucky."
+  },
+  {
+    "id": 1008,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You liked solving problems."
+  },
+  {
+    "id": 1009,
+    "type": "normal",
+    "condition": "(AG >= 6)",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2003,
+      2004
+    ],
+    "msg": "You became interested in computer science."
+  },
+  {
+    "id": 1010,
+    "type": "normal",
+    "condition": "AG >= 6",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You were a student."
+  },
+  {
+    "id": 1011,
+    "type": "jump",
+    "condition": "(AG >= 6) && (#1010)",
+    "result": [
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": 2000
+  },
+  {
+    "id": 1012,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "DS + 1",
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You were creative."
+  },
+  {
+    "id": 1013,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "DS + 1",
+      "DP + 1",
+      "SM + 1",
+      "GT + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You were more talented than others."
+  },
+  {
+    "id": 1014,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You liked playing toys."
+  },
+  {
+    "id": 1014,
+    "type": "normal",
+    "condition": "(AG >= 1) && (AG <= 6)",
+    "result": [
+      "AG + 1",
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      1009,
+      1010
+    ],
+    "msg": "You often"
+  },
+  {
+    "id": 2001,
+    "type": "repeat",
+    "condition": "",
+    "result": [
+      "SC + 1",
+      "LV + 100"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2003
+    ],
+    "msg": "You got a great math grade."
+  },
+  {
+    "id": 2002,
+    "type": "repeat",
+    "condition": "",
+    "result": [
+      "SC - 1",
+      "LV - 100"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You failed a math examination."
+  },
+  {
+    "id": 2003,
+    "type": "normal",
+    "condition": "",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Your teacher invited you to join the school computer team."
+  },
+  {
+    "id": 2004,
+    "type": "normal",
+    "condition": "#2003",
+    "result": [
+      "AG + 1",
+      "SC + 1",
+      "DP + 1",
+      "DS + 1",
+      "SM + 1",
+      "GT + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2006,
+      2007,
+      2008
+    ],
+    "msg": "You studied hard in the school team."
+  },
+  {
+    "id": 2005,
+    "type": "normal",
+    "condition": "#2003",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You didn't study hard in the school team."
+  },
+  {
+    "id": 2006,
+    "type": "normal",
+    "condition": "(#2003) && (@2007) && (@2008) && (@2009) && (@2010) && (@2011)",
+    "result": [
+      "SC + 5",
+      "FS + 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you got an Au"
+  },
+  {
+    "id": 2007,
+    "type": "normal",
+    "condition": "(#2003) && (@2006) && (@2008) && (@2009) && (@2010) && (@2011)",
+    "result": [
+      "SC + 3",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you got an Ag"
+  },
+  {
+    "id": 2008,
+    "type": "normal",
+    "condition": "(#2003) && (@2006) && (@2007) && (@2009) && (@2010) && (@2011)",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you got an Cu"
+  },
+  {
+    "id": 2009,
+    "type": "normal",
+    "condition": "(#2003) && (@2006) && (@2007) && (@2008) && (@2010) && (@2011)",
+    "result": [
+      "SC - 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you failed it because of lots of WAs"
+  },
+  {
+    "id": 2010,
+    "type": "normal",
+    "condition": "(#2003) && (@2006) && (@2007) && (@2008) && (@2009) && (@2011)",
+    "result": [
+      "SC - 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you failed it because of lots of TLEs"
+  },
+  {
+    "id": 2011,
+    "type": "normal",
+    "condition": "(#2003) && (@2006) && (@2007) && (@2008) && (@2009) && (@2010)",
+    "result": [
+      "SC - 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest, you failed it because of MLEs, but you didn't feel up"
+  },
+  {
+    "id": 2013,
+    "type": "jump",
+    "condition": "(#2003) && (#2006) || (#2007) || (#2008) || (#2009) || (#2010) || (#2011)",
+    "result": [
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": 2100
+  },
+  {
+    "id": 2100,
+    "type": "normal",
+    "condition": "",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You participated in the City Programming contest."
+  },
+  {
+    "id": 2101,
+    "type": "normal",
+    "condition": "(#2100) && (@2102) && (@2103) && (@2104) && (@2105) && (@2106) && ((DP >= 5) && (DS >= 5) && (SM >= 5) && (GT >= 5))",
+    "result": [
+      "SC + 5",
+      "FS + 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you got an Au"
+  },
+  {
+    "id": 2102,
+    "type": "normal",
+    "condition": "(#2100) && (@2101) && (@2103) && (@2104) && (@2105) && (@2106) && ((DP >= 4) && (DS >= 4) && (SM >= 4) && (GT >= 4))",
+    "result": [
+      "SC + 3",
+      "FS + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you got an Ag"
+  },
+  {
+    "id": 2103,
+    "type": "normal",
+    "condition": "(#2100) && (@2101) && (@2102) && (@2104) && (@2105) && (@2106) && ((DP >= 2) && (DS >= 2) && (SM >= 2) && (GT >= 2))",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you got an Cu"
+  },
+  {
+    "id": 2104,
+    "type": "normal",
+    "condition": "(#2100) && (@2101) && (@2102) && (@2103) && (@2105) && (@2106) && ((DP <= 3) || (DS <= 3) || (SM <= 3) || (GT <= 3))",
+    "result": [
+      "SC - 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you failed it because of lots of WAs"
+  },
+  {
+    "id": 2105,
+    "type": "normal",
+    "condition": "(#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2106) && ((DP <= 2) || (DS <= 2) || (SM <= 2) || (GT <= 2))",
+    "result": [
+      "SC - 2"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you failed it because of lots of TLEs"
+  },
+  {
+    "id": 2106,
+    "type": "normal",
+    "condition": "(#2100) && (@2101) && (@2102) && (@2103) && (@2104) && (@2105) && ((DP <= 2) || (DS <= 2) || (SM <= 2) || (GT <= 2))",
+    "result": [
+      "SC - 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "During contest CSP, you failed it because of MLEs, but you didn't feel upset."
+  },
+  {
+    "id": 2108,
+    "type": "normal",
+    "condition": "(#2101) || (#2102) || (#2103) || (#2104) || (#2105) || (#2106)",
+    "result": [
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You finished the CSP-3000 contest."
+  },
+  {
+    "id": 2110,
+    "type": "normal",
+    "condition": "SC >= 4",
+    "result": [
+      "AG + 1",
+      "SC + 1",
+      "DP + 2",
+      "DS + 2",
+      "SM + 2",
+      "GT + 2"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2100,
+      2101,
+      2102,
+      2103,
+      2103,
+      2102,
+      2103
+    ],
+    "msg": "You became more interested in programming and you studied harder than others."
+  },
+  {
+    "id": 2111,
+    "type": "normal",
+    "condition": "(SC >= 2) && (SC < 4)",
+    "result": [
+      "AG + 1",
+      "SC + 1",
+      "DP + 1",
+      "DS + 1",
+      "SM + 1",
+      "GT + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2100,
+      2101,
+      2102,
+      2103,
+      2103
+    ],
+    "msg": "You kept being interested in programming and you studied as hard as others did."
+  },
+  {
+    "id": 2112,
+    "type": "normal",
+    "condition": "SC < 2",
+    "result": [
+      "AG + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [
+      2113
+    ],
+    "msg": "You lost the interest of programming and you wanted to quit."
+  },
+  {
+    "id": 2113,
+    "type": "normal",
+    "condition": "#2112",
+    "result": [],
+    "triggers": [
+      2114
+    ],
+    "possibility_up": [],
+    "msg": "You quited the programming team."
+  },
+  {
+    "id": 2114,
+    "type": "jump",
+    "condition": "#2113",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": 2200
+  },
+  {
+    "id": 2115,
+    "type": "normal",
+    "condition": "#2108 && ((#2101) || (#2100))",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Teachers noticed you, they concentrated to improve you."
+  },
+  {
+    "id": 2200,
+    "type": "normal",
+    "condition": "",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "Nothing happened."
+  },
+  {
+    "id": 19122,
+    "type": "normal",
+    "condition": "(DP >= 25) && (DS >= 25) && (SM >= 25) && (GT >= 25)",
+    "result": [
+      "SC + 1"
+    ],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You were selected into Winter Camp."
+  },
+  {
+    "id": 19123,
+    "type": "normal",
+    "condition": "#19122",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [
+      19124
+    ],
+    "msg": "You met Rin."
+  },
+  {
+    "id": 19124,
+    "type": "normal",
+    "condition": "#19123",
+    "result": [],
+    "triggers": [],
+    "possibility_up": [],
+    "msg": "You toued Rin."
+  }
+]
